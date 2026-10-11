@@ -603,6 +603,14 @@ nav .navg{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--mute
 }
 @media (max-width:480px){.g2,.g3,.g4{grid-template-columns:1fr}.map{grid-auto-rows:58px}h1{font-size:22px}}
 @media (prefers-reduced-motion:no-preference){nav a{transition:background .15s}}
+/* ---- 현재 시각 ---- */
+.clock{flex:none;display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:-8px 0 12px;padding:6px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.clock .k{font-size:11px;letter-spacing:.06em;color:var(--mute)}
+.clock time{font-size:24px;font-weight:900;letter-spacing:-.01em;line-height:1.1;color:var(--ink);font-variant-numeric:tabular-nums}
+@media (max-height:1000px) and (min-width:861px){.clock{margin:4px 0 4px;padding:3px 8px}.clock time{font-size:21px}}
+@media (max-height:780px) and (min-width:861px){.clock{position:absolute;top:14px;right:18px;margin:0;padding:0;border:0}.clock .k{display:none}}
+@media (max-width:860px){.clock{position:fixed;z-index:8;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));margin:0;padding:4px 10px;background:var(--panel);border:1px solid var(--line);border-radius:3px;box-shadow:0 1px 5px rgba(0,0,0,.14)}.clock .k{display:none}.clock time{font-size:17px}}
+@media print{.clock{display:none}}
 </style>
 
 </head>
@@ -611,6 +619,7 @@ nav .navg{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--mute
 <nav id="nav">
   <div class="brand">해양산업,<br>통계로 읽기</div>
   <div class="sub">고용노동부 미래고용분석과 <span style="white-space:nowrap">박성아 · 2026.10 공유용</span></div>
+  <div class="clock" role="timer" aria-label="현재 시각"><span class="k">현재 시각</span><time id="clockT">--:--</time></div>
   <div class="navg">부산 통계</div>
   <a href="#s7" class="on"><b>00</b>숫자 지도</a>
   <a href="#s9"><b>01</b>스케일 차이</a>
@@ -1722,5 +1731,9 @@ document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',e=>{e.p
 (function(){const m=/^(s[0-9]+)(?:-(\w+))?$/.exec((location.hash||'').slice(1));let id=m?m[1]:'';if(!id){try{id=localStorage.getItem('tab')||''}catch(e){}}go(/^s[0-9]+$/.test(id)&&document.getElementById(id)?id:'s7');if(m&&m[2])hubShow(m[2],true)})();
 </script>
 
+<script>
+/* ---- 현재 시각 (기기 시계 기준, 분 단위) ---- */
+(function(){var el=document.getElementById('clockT');if(!el)return;var last='';function p(n){return(n<10?'0':'')+n}function tick(){var d=new Date(),t=p(d.getHours())+':'+p(d.getMinutes());if(t!==last){last=t;el.textContent=t;el.setAttribute('datetime',t)}}tick();setInterval(tick,1000)})();
+</script>
 </body>
 </html>
